@@ -15,9 +15,7 @@ var protocolPattern = /^([a-z0-9]+:)/,
   slashedProtocol = {
     "http":true, "https":true, "ftp":true, "gopher":true, "file":true,
     "http:":true, "https:":true, "ftp:":true, "gopher:":true, "file:":true
-  },
-  path = require("path"), // internal module, guaranteed to be loaded already.
-  querystring = require('querystring');
+  };
 
 function urlParse (url, parseQueryString, slashesDenoteHost) {
   if (url && typeof(url) === "object" && url.href) return url;
