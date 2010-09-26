@@ -139,9 +139,8 @@
 			<input type="button" value="Cancel" class="button close" />
 		</div>
 	</div>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-	<script src="/ext/underscore.js"></script>
-	<script src="http://streamie.org/ext/socket.io/socket.io.js"></script>
+	<script src="ext/jquery.min.js"></script>
+	<script src="ext/underscore.js"></script>
 
 	<!-- We use require.js for loading dependencies http://requirejs.org/ -->
   <script src="ext/require.js"></script>
@@ -149,7 +148,7 @@
     require({
       baseUrl: "./",
       paths: {
-        "stream": "/lib/stream"
+        "stream": "lib/stream"
       },
     },
     ["stream/app"],

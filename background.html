@@ -59,6 +59,9 @@ function (error, token, aurl, cont) {
 					Token[u.oauth_token](u.oauth_verifier, function(error, requester){
 						console.log(error, requester)
 						console.log('oauth STEP 3')
+
+            chrome.tabs.create({url: chrome.extension.getURL('streamie/index.html')});
+            
 					})
 				}else{
 					setTimeout(poll, 100)
