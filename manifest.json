@@ -1,0 +1,9 @@
+{
+  "name": "Creamie",
+  "version": "1.0",
+  "description": "Chromium + Streamie is Tasty.",
+	"background_page": "background.html",
+  "permissions": [
+    "http://*.twitter.com/"
+  ]
+}
