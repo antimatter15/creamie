@@ -117,7 +117,7 @@ chrome.extension.onConnect.addListener(function(port) {
     
     // connect to backend twitter stream
     tweety = twitterClient.connect(requester, function (err, data) {
-      console.log("Stream response "+err+data)
+      console.log("Stream response ",err,data)
       if(err){
         console.log(err);
         port.postMessage({streamError: err});

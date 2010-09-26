@@ -32,18 +32,18 @@ function listen(requester, cb) {
       })
     
       response.on('data', function (chunk) {
-        //console.log(chunk);
+        console.log(chunk);
         buffer += chunk;
         var parts = buffer.split(delim);
         var len   = parts.length;
-        //console.log(len);
-        //console.log(parts.join("XXXX"));
+        console.log(len);
+        console.log(parts.join("XXXX"));
         if(len > 1) {
           buffer = parts[len-1];
           for(var i = 0, end = len - 1; i < end; ++i) {
             var entry = parts[i];
             if(entry !== "") {
-              //console.log("Entry: '"+entry+"'");
+              console.log("Entry: '"+entry+"'");
               cb(null, entry);
             }
           }
@@ -95,4 +95,5 @@ function managedListen(requester, cb) {
   return con;
 }
 
-//exports.connect = managedListen;
+var twitterClient = {};
+twitterClient.connect = managedListen;
