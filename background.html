@@ -8,24 +8,36 @@
 <script src="twitter-oauth.js"></script>
 <script src="twitter-stream-client.js"></script>
 
+<script src="twitter-rest-proxy.js"></script>
 
 <script>
-/*
-twitter_oauth.request('2fyLB1arhJ5ZtLRBEb9PA',
-											'MgPrPI5fcfIxeUMqrCb1MrRa3468xImnfFGcKAIv1O0',
-											'antimatter15.com',
-function(){console.log(arguments)})
-*/
-
 var Token = {};
 var TransferURL = {};
+
+//Todo: create an obscure, and ultimately futile system of
+//obfuscating something that can't be obfuscated.
 
 
 var key = '2fyLB1arhJ5ZtLRBEb9PA';
 var secret = 'MgPrPI5fcfIxeUMqrCb1MrRa3468xImnfFGcKAIv1O0';
-var host = 'antimatter15.com';
 
-var oauth_callback_url = "http://example.com";
+
+var host = 'antimatter15.com';
+var token = null;
+
+function getTwitterApiClient(cb) {
+  oauth.reuse(key, secret, token, function (err, requester) {
+    if(err) {
+      respondError("no_auth")
+    } else {
+      cb(err, requester);
+    }
+  });
+}
+
+var oauth_callback_url = "http://example.com"; //probably bad callback URL, but hey, it works.
+
+
 twitter_oauth.request(key, secret, oauth_callback_url, 
 function (error, token, aurl, cont) {
 	if(error) throw "EPIC FAIL OAUTH ONE";
@@ -41,13 +53,15 @@ function (error, token, aurl, cont) {
 			chrome.tabs.get(tab.id, function(info){
 				if(info.url.indexOf('oauth_verifier=') != -1){
 					var u = url.parse(info.url, true).query;
+					chrome.tabs.remove(tab.id);
 					console.log(u);
+					token = u.oauth_token;
 					Token[u.oauth_token](u.oauth_verifier, function(error, requester){
 						console.log(error, requester)
 						console.log('oauth STEP 3')
 					})
 				}else{
-					setTimeout(poll, 200)
+					setTimeout(poll, 100)
 				}
 				
 			})

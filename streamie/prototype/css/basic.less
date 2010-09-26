@@ -1,0 +1,270 @@
+/***basics***/
+* html *{display:none;}
+*+html *{display:none;}
+body{
+	margin:0;
+	padding:20px 0 0 0;
+	font-size:12px;
+	line-height:normal;
+	#client-font > .HelveticaNeue;
+	color:#888;
+	text-rendering:optimizeLegibility;
+	//#client-gradient > .body;
+	background:#fefefe fixed;
+	&.loading{
+		background:#fefefe url("/images/lg_streamie.png") no-repeat center 250px;
+	}
+}
+a{
+	text-decoration:none;
+	color:inherit;
+	#client-transition-time > .short;
+}
+h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6{
+	margin:0;
+	padding:0;
+	font-weight:normal;
+	font-size:100%;
+	line-height:100%;
+}
+p{
+	margin:0;
+	padding:0;
+	line-height:18px;
+}
+
+form,
+fieldset,
+legend {
+	border:0;
+	padding:0;
+	margin:0;
+}
+textarea{
+	resize:none;
+}
+dl,ul,ol,li{
+	margin:0;
+	padding:0;
+	list-style:none;
+}
+img{border:none;}
+b,strong{font-weight:bold;}
+
+.h1,
+.h2{
+	clear:both;
+	color:#333;
+	margin:0 0 40px 0;
+	font-size:23px;
+}
+
+.h3{
+	color:#333;
+	font-size:13px;
+	font-weight:bold;
+	margin:0 0 10px 0;
+	text-transform:uppercase;
+}
+.h4,.h5.h6{
+	color:#333;
+	font-size:10px;
+	font-weight:bold;
+	margin:0 0 5px 0;
+	text-transform:uppercase;
+}
+
+
+#container{
+	margin:0 auto;
+	max-width:640px;
+}
+
+/*header*/
+#header{
+	display:none; /* only shown for authenticated users */
+	position:fixed;
+	top:0;
+	left:0;
+	right:0;
+	z-index:2;
+	#client-shadow > .small;
+	-webkit-transform: translate3d(0,0,0);
+	#logo{
+		color:#fff;
+		font-size:11px;
+		font-weight:bold;
+		text-transform:uppercase;
+		padding:5px;
+		border-bottom:1px solid #555;
+		text-align:center;
+		background:#333;
+		text-shadow: 0 0 2px #fff;
+		&:after,
+		&:before{
+			content:" // ";
+		}
+	}
+	#mainnav{
+		overflow:hidden;
+		text-align:center;
+		border-bottom:1px solid #555;
+		background:#f7f7f7;
+		background:rgba(250,250,250,.95);
+		#client-font > .Arial;
+		li{
+			position:relative;
+			display:inline-block;
+			margin:0 8px;
+			font-size:30px;
+			line-height:20px;
+			padding:10px 0 5px;
+			width:50px;
+			text-align:center;
+			#client-transition-time > .long;
+			border-bottom:0 solid #555;
+			&.active,
+			&:hover{
+				border-bottom-width:5px;
+				a{
+					opacity:1;
+				}
+			}
+			&.new:after{
+				display:block;
+				position:absolute;
+				top:2px;
+				right:5px;
+				width:5px;
+				height:5px;
+				content:"\00a0";
+				background:@client-red;
+				#client-border-radius > .middle;
+			}
+			a{
+				position:relative;
+				color:#333;
+				display:block;
+				opacity:.8;
+			}
+			&.timeline a{
+				font-size:37px;				
+			}	
+			&.fv,
+			&.rt{
+				a{
+					top:-2px;
+					font-size:25px;
+				}
+			}
+			&.dm{
+				a{
+					top:2px;
+					font-size:35px;
+				}
+			}
+			&.settings{
+				a{
+					font-size:35px;
+				}
+			}
+			&.add a{
+				top:-1px;
+			}
+		}
+	}
+	
+}
+
+html.no-utf8{
+	#header{
+		#mainnav{
+			li{
+				line-height:auto;
+				padding:0;
+				a{
+					background:transparent url("/images/ic_mainnav.png") no-repeat 0 0;
+					text-indent:-3000px;
+					display:block;
+					height:39px;
+					top:0 !important;
+					font-size:10px !important;
+				}
+				&.rpl a{
+					background-position:center 9px;
+				}
+				&.timeline a{
+					background-position:center -92px;
+				}
+				&.rt a{
+					background-position:center -190px;
+				}
+				&.fv a{
+					background-position:center -292px;
+				}
+				&.dm a{
+					background-position:center -392px;
+				}
+				&.settings a{
+					background-position:center -492px;
+				}
+				&.add a{
+					background-position:center -592px;
+				}
+			}
+		}
+	}
+}
+
+#content{
+	margin:60px 5px 20px;
+	padding:10px 10px 0;
+	background:#f3f3f3;
+	background:rgba(254,254,254,1);
+	border:1px solid #efefef;
+	#client-border-radius > .big;
+	h2{
+		display:none;
+	}
+	.logo{
+		text-align:center;
+		margin-top:20px;
+		margin-bottom:30px;
+		img{	
+			padding:0 0 10px 0;
+			border-bottom:5px solid #000;
+		}
+	}
+	#about{
+		h2{
+			display:block;
+			font-size: 18px;
+		}
+		font-size:13px;
+		p{
+			margin-bottom:18px;
+			text-align:justify;
+			color:#000;
+		}
+		p.subline{
+			font-size:11px;
+		}
+		h2,h3,h4{
+			font-weight:bold;
+			margin-bottom:10px;
+			color:#000;
+		}
+		ul{
+			margin-bottom:20px;
+			li:before{
+				content:"- ";
+			}
+		}
+		a{
+			color:@client-red;
+			&:hover{
+				color:#111;
+			}
+		}
+	}
+}
