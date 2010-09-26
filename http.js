@@ -19,6 +19,7 @@ http.Client.prototype.request = function(method, path, headers){
 
 http.clientRequest = function(port, hostname, method, path, headers){
 	this.xhr = new XMLHttpRequest();
+	this.socket = {on:function(){}}
 	this.postdata = '';
 	this.xhr.open(method, hostname + ':' + port + path, true);
 	for(var i in headers){ //Object.keys later?
@@ -27,8 +28,8 @@ http.clientRequest = function(port, hostname, method, path, headers){
 	var t = this;
   this.xhr.onreadystatechange = function(){
 		if(t.response && t.xhr.readyState >= 3){
-			t.response = null;
-			t.response(new http.clientResponse(t.xhr))
+			t.response(new http.clientResponse(t.xhr));
+            t.response = null;
 		}
 	}
 	this.response = function(){}
@@ -45,7 +46,7 @@ http.clientRequest.prototype.write = function(data){
 }
 
 http.clientRequest.prototype.end = function(data){
-	this.write(data);
+	if(data) this.write(data);
 	this.xhr.send(this.postdata);
 }
 
@@ -65,15 +66,22 @@ http.clientResponse = function(xhr){
 	var len = 0;
 	var interval = setInterval(function(){
 		t.statusCode = xhr.status;
-		if(xhr.readyState == 4)
-			t._end();
+
 		var xrl = xhr.responseText.length;
 		if(xrl > len){
 			t._data(xhr.responseText.substr(len));
 			len = xrl;
 		}
+		if(xhr.readyState == 4){
+            clearInterval(interval);
+            t._end();
+        }
 	},42);
 }
+
+
+http.clientResponse.prototype.setEncoding = function(){}
+
 
 http.clientResponse.prototype.on = function(event, callback){
 	if(event == 'data'){

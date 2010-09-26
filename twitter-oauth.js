@@ -1,9 +1,6 @@
-var sys = require('sys')
+var twitter_oauth = (function(exports){
 
-var nStore = require('nStore');
-var store  = nStore(__dirname + '/data/oauth.db');
-
-var OAuth  = require('oauth').OAuth;
+var OAuth  = oauth.OAuth;
 
 function getOA (key, secret, oauth_callback_url) {
   return new OAuth("https://api.twitter.com/oauth/request_token",
@@ -17,18 +14,11 @@ function getOA (key, secret, oauth_callback_url) {
 
 
 exports.reuse = function (key, secret, reuse_oauth_token, cb) {
-  store.get(reuse_oauth_token, function (err, doc) {
-    if(err) {
-      console.log("Error in oauth lookup of "+reuse_oauth_token+" "+err);
-      cb(err);
-    } else {
-      cb(null, function (url, method, cb, postbody) {
-        var oa = getOA(key, secret, null);
-        var request = oa[method.toLowerCase()](url, doc.oauth_access_token, doc.oauth_access_token_secret, postbody)
-        cb(null, request);
-      }, doc.results);
-    }
-  })
+  cb(null, function (url, method, cb, postbody) {
+    var oa = getOA(key, secret, null);
+    var request = oa[method.toLowerCase()](url, localStorage.oauth_access_token, localStorage.oauth_access_token_secret, postbody)
+    cb(null, request);
+  }, doc.results);
 }
 
 /*
@@ -43,33 +33,27 @@ exports.request = function (key, secret, oauth_callback_url, cb) {
   oa.getOAuthRequestToken(function(error, oauth_token, oauth_token_secret, results){
     if(error) cb('error :' + JSON.stringify(error))
     else { 
-      /*sys.puts('oauth_token :' + oauth_token)
-      sys.puts('oauth_token_secret :' + oauth_token_secret)
-      sys.puts('requestoken results :' + sys.inspect(results))
-      sys.puts("Requesting access token")
-      sys.puts("http://api.twitter.com/oauth/authorize?oauth_token="+oauth_token);*/
+      console.log('oauth_token :' + oauth_token)
+      console.log('oauth_token_secret :' + oauth_token_secret)
+      console.log('requestoken results :' ,(results))
+      console.log("Requesting access token")
+      console.log("http://api.twitter.com/oauth/authorize?oauth_token="+oauth_token);
       
       var cont = function (oauth_token_verifier, cb) {
         oa.getOAuthAccessToken(oauth_token, oauth_token_secret, oauth_token_verifier, function(error, oauth_access_token, oauth_access_token_secret, results2) {
           if(error) {
             cb("Request Error "+JSON.stringify(error))
           } else {
-            /*sys.puts('oauth_access_token :' + oauth_access_token)
-            sys.puts('oauth_token_secret :' + oauth_access_token_secret)
-            sys.puts('accesstoken results :' + sys.inspect(results2))
-            sys.puts("Requesting access token")*/
+            console.log('oauth_access_token :' + oauth_access_token)
+            console.log('oauth_token_secret :' + oauth_access_token_secret)
+            console.log('accesstoken results :' ,(results2))
+            console.log("Requesting access token")
             var data= "";
             
-            store.save(oauth_token, {
-              oauth_access_token: oauth_access_token,
-              oauth_access_token_secret: oauth_access_token_secret,
-              results:results2
-            }, function (err) {
-              if(err) {
-                console.log("Error saving oauth credentials "+err);
-              }
-            })
-            
+						localStorage.oauth_access_token = oauth_access_token;
+						localStorage.oauth_access_token_secret = oauth_access_token_secret;
+						localStorage.results = results2;
+
             cb(null, function (url, method, cb) {
               var request = oa[method.toLowerCase()](url, oauth_access_token, oauth_access_token_secret)
               cb(null, request);
@@ -82,3 +66,6 @@ exports.request = function (key, secret, oauth_callback_url, cb) {
     }
   })
 }
+
+return exports;
+})({});

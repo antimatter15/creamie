@@ -4,6 +4,7 @@
   "description": "Chromium + Streamie is Tasty.",
 	"background_page": "background.html",
   "permissions": [
-    "http://*.twitter.com/"
+    "http://*.twitter.com/",
+    "https://*.twitter.com/"
   ]
 }

@@ -1,4 +1,5 @@
 var oauth = (function(exports){
+	var URL = url; //the url module is URL here.
 exports.OAuth= function(requestUrl, accessUrl, consumerKey, consumerSecret, version, authorize_callback, signatureMethod, nonceSize, customHeaders) {
   this._requestUrl= requestUrl;
   this._accessUrl= accessUrl;
@@ -184,8 +185,8 @@ exports.OAuth.prototype._performSecureRequest= function( oauth_token, oauth_toke
 
   var oauthProvider;
   if( parsedUrl.protocol == "https:" ) {
-		throw "Encrypted = screwed"
-		//oauthProvider= this._createClient(parsedUrl.port, parsedUrl.hostname, true, crypto.createCredentials({}));
+		//throw "Encrypted = screwed"
+		oauthProvider= this._createClient(parsedUrl.port, 'https://'+parsedUrl.hostname);
   }
   else {
     oauthProvider= this._createClient(parsedUrl.port, parsedUrl.hostname);
@@ -225,12 +226,12 @@ exports.OAuth.prototype._performSecureRequest= function( oauth_token, oauth_toke
   if( callback ) {
     var data=""; 
     var self= this;
-    request.addListener('response', function (response) {
+    request.on('response', function (response) {
       response.setEncoding('utf8');
-      response.addListener('data', function (chunk) {
+      response.on('data', function (chunk) {
         data+=chunk;
       });
-      response.addListener('end', function () {
+      response.on('end', function () {
         if( response.statusCode != 200 ) {
           callback({ statusCode: response.statusCode, data: data });
         } else {
@@ -239,7 +240,7 @@ exports.OAuth.prototype._performSecureRequest= function( oauth_token, oauth_toke
       });
     });
   
-    request.socket.addListener("error",callback);
+    request.socket.on("error",callback);
     if( method == "POST" && post_body != null && post_body != "" ) {
       request.write(post_body);
     }
