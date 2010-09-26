@@ -18,7 +18,7 @@ exports.reuse = function (key, secret, reuse_oauth_token, cb) {
     var oa = getOA(key, secret, null);
     var request = oa[method.toLowerCase()](url, localStorage.oauth_access_token, localStorage.oauth_access_token_secret, postbody)
     cb(null, request);
-  }, doc.results);
+  }, JSON.parse(localStorage.results));
 }
 
 /*
@@ -50,9 +50,9 @@ exports.request = function (key, secret, oauth_callback_url, cb) {
             console.log("Requesting access token")
             var data= "";
             
-						localStorage.oauth_access_token = oauth_access_token;
-						localStorage.oauth_access_token_secret = oauth_access_token_secret;
-						localStorage.results = results2;
+			localStorage.oauth_access_token = oauth_access_token;
+			localStorage.oauth_access_token_secret = oauth_access_token_secret;
+			localStorage.results = JSON.stringify(results2);
 
             cb(null, function (url, method, cb) {
               var request = oa[method.toLowerCase()](url, oauth_access_token, oauth_access_token_secret)

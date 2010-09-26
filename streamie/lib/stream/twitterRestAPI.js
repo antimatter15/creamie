@@ -49,13 +49,24 @@ require.def("stream/twitterRestAPI",
         callback.apply(this, arguments); // we always call the callback. Check our status!
       };
       
-      // make the actual request
+      // make the actual request/
+      /*
       $.ajax({
         url: "/twitter"+url, // all URLs starting with /twitter get proxied to twitter (with oauth signing)
         type: method, // Why is this not called method in jQuery?
         data: requestData,
         success: success,
         error: error
+      });*/
+
+      chrome.extension.sendRequest({
+        pathname: "twitter",
+        url: url,
+        method: method,
+        data: requestData
+      }, function(response) {
+        console.log('GOT RESPONSE WOOT', response);
+        success(response.data);
       });
     }
     

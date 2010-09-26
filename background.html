@@ -27,7 +27,7 @@ var host = 'antimatter15.com'; //make something up.
 var token = null;
 
 function getTwitterApiClient(cb) {
-  oauth.reuse(key, secret, token, function (err, requester) {
+  twitter_oauth.reuse(key, secret, token, function (err, requester) {
     if(err) {
       respondError("no_auth")
     } else {
@@ -75,5 +75,56 @@ function (error, token, aurl, cont) {
 	console.log(url)
 })
 
+chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
 
+  if(request.pathname == 'twitter'){
+    console.log("Twitter API call" + request.url);
+    var data = request.data;
+    
+    getTwitterApiClient(function (err, requester) {
+      console.log("Proxying API call "+request.url);
+      
+      twitterProxy.client(requester, request.url + (data?('?' + data):''), request.method, function(error, req){
+        req.on('response', function(res){
+          var buf = '';
+          response.on('data', function(chunk){
+            buf += chunk;
+          });
+
+          response.on('end', function(){
+            sendResponse({
+              data: buf
+            })
+          })
+        })
+      });
+    });
+    
+  }
+});
+
+
+chrome.extension.onConnect.addListener(function(port) {
+  console.assert(port.name == "stream");
+
+  // try to find the token in the databse and reuse the credentials
+  twitter_oauth.reuse(key, secret, token, function (err, requester, info) {
+    // all good, lets go
+    port.postMessage({
+      action: "auth_ok",
+      info: info
+    })
+    
+    // connect to backend twitter stream
+    tweety = twitterClient.connect(requester, function (err, data) {
+      console.log("Stream response "+err+data)
+      if(err){
+        console.log(err);
+        port.postMessage({streamError: err});
+      }else{
+        port.postMessage({tweet: data});
+      }
+    });
+  });
+});
 </script>
