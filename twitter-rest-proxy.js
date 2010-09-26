@@ -1,6 +1,4 @@
-var sys = require('sys'),
-    http = require('http');
-
+var twitterProxy = (function(exports){
 var base = "https://api.twitter.com";
 
 exports.proxy = function (requester, serverRequest, serverResponse, data) {
@@ -36,3 +34,6 @@ exports.proxy = function (requester, serverRequest, serverResponse, data) {
 exports.client = function (requester, path, method, cb, data) { // cb(error, request)
   requester(base+path, method, cb, data)
 }
+
+return exports;
+})({});

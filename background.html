@@ -6,3 +6,55 @@
 <script src="oauth.js"></script>
 
 <script src="twitter-oauth.js"></script>
+<script src="twitter-stream-client.js"></script>
+
+
+<script>
+/*
+twitter_oauth.request('2fyLB1arhJ5ZtLRBEb9PA',
+											'MgPrPI5fcfIxeUMqrCb1MrRa3468xImnfFGcKAIv1O0',
+											'antimatter15.com',
+function(){console.log(arguments)})
+*/
+
+var Token = {};
+var TransferURL = {};
+
+
+var key = '2fyLB1arhJ5ZtLRBEb9PA';
+var secret = 'MgPrPI5fcfIxeUMqrCb1MrRa3468xImnfFGcKAIv1O0';
+var host = 'antimatter15.com';
+
+var oauth_callback_url = "http://example.com";
+twitter_oauth.request(key, secret, oauth_callback_url, 
+function (error, token, aurl, cont) {
+	if(error) throw "EPIC FAIL OAUTH ONE";
+	
+    var temp = sha1.HMACSHA1(token,""+Math.random());
+
+     console.log("oauth step 1 success");
+     Token[token] = cont;
+	 chrome.tabs.create({
+		url: aurl
+	}, function(tab){
+		var poll = function(){
+			chrome.tabs.get(tab.id, function(info){
+				if(info.url.indexOf('oauth_token=') != -1){
+					var u = url.parse(info.url, true).query;
+					Token[u.oauth_token](u.oauth_verifier, function(error, requester){
+						console.log(error, requester)
+						console.log('oauth STEP 3')
+					})
+				}else{
+					setTimeout(poll, 200)
+				}
+				
+			})
+		};
+		poll();
+	})
+	console.log(url)
+})
+
+
+</script>

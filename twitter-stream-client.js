@@ -1,6 +1,4 @@
-var sys = require('sys'),
-    http = require('http');
-    
+
 var connections = [];
 var conIndex = 0;
 
@@ -97,4 +95,4 @@ function managedListen(requester, cb) {
   return con;
 }
 
-exports.connect = managedListen;
+//exports.connect = managedListen;
