@@ -39,8 +39,9 @@ function (error, token, aurl, cont) {
 	}, function(tab){
 		var poll = function(){
 			chrome.tabs.get(tab.id, function(info){
-				if(info.url.indexOf('oauth_token=') != -1){
+				if(info.url.indexOf('oauth_verifier=') != -1){
 					var u = url.parse(info.url, true).query;
+					console.log(u);
 					Token[u.oauth_token](u.oauth_verifier, function(error, requester){
 						console.log(error, requester)
 						console.log('oauth STEP 3')
