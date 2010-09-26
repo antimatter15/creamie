@@ -30,6 +30,7 @@ require.def("stream/client",
     }
     
     function connect (cb) {
+	//todo: chrome transport
       io.setPath('/ext/socket.io/');
       window.WEB_SOCKET_SWF_LOCATION = "/foobar"; // we do not use flash, but socket.io still complaints
       var socket = new io.Socket(location.hostname, { 

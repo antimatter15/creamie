@@ -1,5 +1,5 @@
 require.def("stream/status",
-  ["stream/twitterRestAPI", "stream/streamplugins", "stream/helpers", "stream/popin", "stream/location", "stream/settings", "stream/keyValueStore", "text!../templates/status.ejs.html", "/ext/jquery.autocomplete.js"],
+  ["stream/twitterRestAPI", "stream/streamplugins", "stream/helpers", "stream/popin", "stream/location", "stream/settings", "stream/keyValueStore", "text!../templates/status.ejs.html", "ext/jquery.autocomplete.js"],
   function(rest, streamPlugins, helpers, popin, location, settings, keyValue, replyFormTemplateText) {
     var replyFormTemplate = _.template(replyFormTemplateText);
     

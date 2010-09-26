@@ -4,7 +4,7 @@
  */
 
 require.def("stream/linkplugins",
-  ["stream/helpers", "/ext/parseUri.js"],
+  ["stream/helpers", "ext/parseUri.js"],
   function(helpers) {
     
     return {
